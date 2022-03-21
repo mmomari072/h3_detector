@@ -1,0 +1,61 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Mar 21 13:39:38 2022
+
+@author: omari
+"""
+import pickle
+import socket
+import socket
+import sys
+import json
+
+HOST, PORT = socket.gethostname(), 12397
+
+#m ='{"id": 2, "name": "abc"}'
+m = {"id": 2, "name": "abc"} # a real dict.
+
+data = {"r_id":0,"f_message":None,"conc":0,"SN":"","Rad":0}
+
+#data = json.dumps(m)
+
+# Create a socket (SOCK_STREAM means a TCP socket)
+sock = socket.socket()
+sock.bind((HOST,PORT))
+
+fp = open("shared.pkl","wb")
+port_name = '/dev/ttyS0'
+import serial
+ser = serial.Serial(port = port_name,baudrate=9600, bytesize=8, timeout=10, stopbits=serial.STOPBITS_ONE)
+i=0
+while True:
+    if True:
+        ser_bytes = ser.readline()
+        decoded_bytes = [x for x in ser_bytes.decode("utf-8").strip().split() if x!='']
+        if len(decoded_bytes)==0:
+            continue
+        
+        data["r_id"]=i
+        data["f_message"]=decoded_bytes[0][1:]
+        data["conc"]=float(decoded_bytes[1])
+        data["SN"]=decoded_bytes[3]
+        data["Rad"]=float(decoded_bytes[5])
+        m=json.dumps(data)
+        print(decoded_bytes)
+        if len(data)==1:
+            continue
+        pickle.dump(data, fp)
+        #sock.sendall(bytes(m,encoding="utf-8"))
+
+        i+=1
+        fp.flush()
+
+    else:
+        print("Keyboard Interrupt")
+        sock.close()
+
+        break
+    
+ser.close()
+fp.close()
