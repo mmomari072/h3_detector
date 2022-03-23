@@ -5,7 +5,20 @@ Created on Mon Mar 21 14:39:37 2022
 
 @author: omari
 """
-import thingspeak
+import memcache
+mc = memcache.Client(['127.0.0.1:11211'], debug=0)
+mc.set("some_key", "Some value")
+value = mc.get("some_key")
+
+
+
+
+
+
+
+
+
+"""import thingspeak
 ch = thingspeak.Channel(9)
 import pickle
 fp = open("shared.pkl","rb")
@@ -25,3 +38,4 @@ while True:
     print (shared)
     sleep(1)
 
+"""
