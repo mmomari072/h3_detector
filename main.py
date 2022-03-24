@@ -24,14 +24,14 @@ while True:
         ser_bytes = ser.readline()
         A = detector_message(ser_bytes.decode("utf-8"),i)
         A.set_data_2(ser_bytes.decode("utf-8"),i)
-    
+        i+=1    
         if not A:
             continue
         mc.set(mc_var_attribute,A)
         pickle.dump(A, fp)
         #sock.sendall(bytes(m,encoding="utf-8"))
 
-        i+=1
+
         fp.flush()
 
     except:
