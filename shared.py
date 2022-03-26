@@ -5,10 +5,13 @@ Created on Mon Mar 21 14:39:37 2022
 
 @author: omari
 """
-import memcache
-mc = memcache.Client(['127.0.0.1:11211'], debug=0)
+#from pymemcache.client.base import Client
+from memcache import Client
+
+mc = Client(['127.0.0.1:11211'])
 mc.set("some_key", "Some value")
 value = mc.get("some_key")
+value = mc.get("__TYNE_DETECTOR_MESSAGE__")
 
 
 

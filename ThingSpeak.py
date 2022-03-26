@@ -6,7 +6,7 @@ Created on Fri Mar 25 07:01:36 2022
 @author: omari
 """
 import thingspeak as tks
-from datetime import datetime 
+import datetime
 class str2num:
     def __init__(self,x:str="1"):
         self.x = x
@@ -91,7 +91,7 @@ class thing_speak(tks.Channel):
             for f_id in range(1,9):
                 self.__data__[i][f"field{f_id}"]=str2num(self.__data__[i][f"field{f_id}"]).convert_to(float)
                 
-            self.__data__[i]['created_at']=datetime.strptime(self.__data__[i]['created_at'],timeformat)
+            self.__data__[i]['created_at']=datetime.datetime.strptime(self.__data__[i]['created_at'],timeformat)
         return self.__data__
     
     def __getattr__(self,name):
@@ -113,6 +113,14 @@ class thing_speak(tks.Channel):
         self.update(f_id,value)
         return self
 if __name__=="__main__":
+    from pylab import *
+    import matplotlib as mpl
+    mpl.rc('axes', labelsize=14)
+    mpl.rc('xtick', labelsize=12)
+    mpl.rc('ytick', labelsize=12)
     ch1=thing_speak()
-    ch1.Get({"results":8000,"offset":3})
+    ch1.Get({"results":800})
     
+    plot(ch1.dt,ch1.Field2,ch1.dt,moveavg(ch1.Field2,30))
+    grid()
+    xticks(rotation=45)

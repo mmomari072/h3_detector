@@ -8,8 +8,13 @@ Created on Wed Mar 23 21:19:53 2022
 
 from messages_classes import *
 from time import sleep
-import memcache
-mc = memcache.Client(['127.0.0.1:11211'], debug=0)
+if 1:
+    import memcache
+    mc = memcache.Client(['127.0.0.1:11211'], debug=0)
+else:
+    from pymemcache.client.base import Client
+    mc = Client('127.0.0.1:11211')
+    
 with open("data","r") as fid:
     i = 0
     for line in fid:
@@ -22,5 +27,5 @@ with open("data","r") as fid:
             print("sending data")
         i+=1
         print(TYNE_DETECTOR.__message__)
-        sleep(1)
-        
+        sleep(0.01)
+
